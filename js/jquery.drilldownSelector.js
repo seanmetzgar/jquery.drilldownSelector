@@ -1,19 +1,30 @@
 (function ($) {
     "use strict";
     $.drilldownSelector = function (element, options) {
+        /** Variable Definitions **/
         var plugin = this,
-            $element = $(element),
-            defaults = { };
-
-        plugin.vars = {
+            internal = {};
+        /** Public Variables **/
+		plugin.vars = {
             currentLevel: 1,
             sectionCounter: 0,
             jsonString: "{\"sections\": [",
             jsonData: null,
             htmlString: ""
         };
-        plugin.settings = {};
-        plugin.methods = {
+        /** Default Settings **/
+        internal.defaults = {
+        	containerClass: "drilldownSelectorContainer",
+            loaderClass: "drilldownSelectorLoader"
+        };
+        
+        internal.$element = $(element);
+        internal.element = element;
+        internal.settings = {};
+        internal.methods = {
+        	generateContainer: function() {
+                internal.$element.after("<div class=\"" + internal.settings.containerClass + "\"></div>");
+        	},
             addSection: function (itemLevel, text, value) {
                 var levelCount = 0,
                     json = "";
@@ -59,7 +70,7 @@
                             section = data.sections[key];
                             html += "<li><a href=\"#\" data-value=\"" + section.value + "\">" + section.text + "</a>";
                             //Possible stack overflow... oh well...
-                            if (section.sections && section.sections.length > 0) { html += plugin.methods.buildHTML(section); }
+                            if (section.sections && section.sections.length > 0) { html += internal.methods.buildHTML(section); }
                             html += "</li>";
                         }
                     }
@@ -69,9 +80,11 @@
             }
         };
         plugin.init = function () {
-            plugin.settings = $.extend({}, defaults, options);
+            internal.settings = $.extend({}, defaults, options);
+            internal.methods
 
-            $element.find("option").each(function () {
+
+            internal.$element.find("option").each(function () {
                 var tempTextNode = $(this).text(),
                     tempValue = $(this).attr("value"),
                     tempMatch = null,
@@ -87,12 +100,12 @@
                                 tempLevel = tempMatch[0].replace(/\s/i, "").length;
                                 tempText = tempTextNode.replace(tempMatch[0], "");
                                 // Add level
-                                tempJson = plugin.methods.addSection(tempLevel, tempText, tempValue);
+                                tempJson = internal.methods.addSection(tempLevel, tempText, tempValue);
                                 if (tempJson) {
                                     plugin.vars.jsonString += tempJson;
                                     plugin.vars.currentLevel = tempLevel;
                                 } else {
-                                    plugin.vars.jsonString += plugin.methods.endJSON();
+                                    plugin.vars.jsonString += internal.methods.endJSON();
                                     rVal = false;
                                 }
                             }
@@ -101,10 +114,10 @@
                 }
                 return rVal;
             });
-            plugin.vars.jsonString += plugin.methods.endJSON();
+            plugin.vars.jsonString += internal.methods.endJSON();
             plugin.vars.jsonData = JSON.parse(plugin.vars.jsonString);
-            plugin.vars.htmlString = plugin.methods.buildHTML(plugin.vars.jsonData);
-            $element.after(plugin.vars.htmlString);
+            plugin.vars.htmlString = internal.methods.buildHTML(plugin.vars.jsonData);
+            internal.$element.after(plugin.vars.htmlString);
         };
         plugin.init();
     };
