@@ -10,7 +10,8 @@
             sectionCounter: 0,
             jsonString: "{\"sections\": [",
             jsonData: null,
-            htmlString: ""
+            htmlString: "",
+            hasSelected: false
         };
         /** Default Settings **/
         internal.defaults = {
@@ -19,7 +20,8 @@
             loaderText: "Loading...",
             menuClass: "drilldownSelectorMenu",
             hasSubsClass: "hasSubs",
-            goBackClass: "goBack"
+            goBackClass: "goBack",
+            checkboxClass: "checkbox"
         };
         /** Elements / jQuery Objects **/
         internal.$element = $(element);
@@ -46,7 +48,7 @@
                 internal.$loader.hide();
                 internal.$menu.show();
             },
-            addSection: function (itemLevel, text, value) {
+            addSection: function (itemLevel, text, value, selected) {
                 var levelCount = 0,
                     json = "";
                 if (plugin.vars.sectionCounter !== 0) {
@@ -89,7 +91,10 @@
                     for (key in data.sections) {
                         if (data.sections.hasOwnProperty(key)) {
                             section = data.sections[key];
-                            html += "<li><a href=\"#\" data-value=\"" + section.value + "\">" + section.text + "</a>";
+                            html += "<li><a href=\"#\" data-value=\"";
+                            html += section.value + "\"";
+                            html += (section.selected === true) ? "class=\"selected\"":"";
+                            html += ">" + section.text + "</a>";
                             //Possible stack overflow... oh well...
                             if (section.sections && section.sections.length > 0) { html += internal.methods.buildHTML(section); }
                             html += "</li>";
@@ -100,9 +105,34 @@
                 return html;
             },
             addClasses: function () {
+            	var $activeUl = internal.$menu.find("ul.active");
             	internal.$menu.find("li").each(function() {
             		if ($(this).find("ul").length > 0) {
-            			$(this).children("a").addClass(internal.settings.hasSubsClass);
+            			$(this).addClass(internal.settings.hasSubsClass);
+            		}
+            	});
+            	
+            	if ($activeUl.length === 0) {
+            		internal.$menu.children("ul").addClass("active");
+            	} else if ($activeUl.length > 1) {
+            		$activeUl.children("li:selected").parent("ul").addClass("active");
+            	} 
+            },
+            addCheckboxes: function () {
+            	internal.$menu.find("li").each(function () {
+            		if (!isNaN($(this).children("a").attr("data-value"))) {
+            			$(this).children("a").append("<span class=\"checkbox\">&nbsp;</span>");
+            		}
+            	})
+            },
+            addListeners: function() {
+            	internal.$menu.find("a").click(function (e) {
+            		var $parentLi = null;
+            		e.preventDefault();
+            		$parentLi = $(this).parent("li");
+            		if ($parentLi.hasClass(internal.settings.hasSubsClass)) {
+            			internal.$menu.find("ul").removeClass("active");
+            			$parentLi.children("ul").addClass("active");
             		}
             	});
             }
@@ -121,7 +151,15 @@
                     tempLevel = 0,
                     tempJson = false,
                     tempText = "",
+                    tempSelected = $(this).is(":selected") ? true:false,
                     rVal = true;
+                if (tempSelected) {
+                	if (!plugin.vars.hasSelected) {
+                		plugin.vars.hasSelected = true;
+                	} else {
+                		tempSelected = false;
+                	}
+                }
                 if (tempTextNode.length > 0) {
                     tempMatch = tempTextNode.match(/^\-[\-]*\s/i);
                     if (tempMatch !== null) {
@@ -149,6 +187,8 @@
             plugin.vars.htmlString = internal.methods.buildHTML(plugin.vars.jsonData);
             internal.$menu.append(plugin.vars.htmlString);
             internal.methods.addClasses();
+            internal.methods.addCheckboxes();
+            internal.methods.addListeners();
             internal.methods.showSelector();
         };
         plugin.init();

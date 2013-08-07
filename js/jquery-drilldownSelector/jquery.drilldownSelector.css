@@ -27,27 +27,43 @@
 	border-right: 1px solid #d1d1d1;
 }
 	.drilldownSelectorContainer .drilldownSelectorMenu ul {
-		display: block;
+		display: none;
 		list-style-type: none;
 		margin: 0; padding: 0;
 	}
-		.drilldownSelectorContainer .drilldownSelectorMenu > ul ul{
-			display: none;
+		.drilldownSelectorContainer .drilldownSelectorMenu ul.active {
+			display: block;
 		}
 		.drilldownSelectorContainer .drilldownSelectorMenu li {
 			display: block;
 			list-style-type: none;
 			margin: 0; padding: 0;
 			border-bottom: 1px solid #d1d1d1;
-			
+			position: relative;			
 		}
+			.drilldownSelectorContainer .drilldownSelectorMenu li .checkbox {
+				display: block;				
+				width: 21px;
+				position: absolute;
+				right: 5px;
+				top: 0;
+				bottom: 0;
+				z-index: 2;
+				background: transparent url(img/checkbox.png) -30px 50% no-repeat;
+			}
+				.drilldownSelectorContainer .drilldownSelectorMenu li .checkbox:hover { background-position: -90px 50%; }
+				.drilldownSelectorContainer .drilldownSelectorMenu li.selected .checkbox { background-position: 0 50%; }
+				.drilldownSelectorContainer .drilldownSelectorMenu li.selected .checkbox:hover { background-position: -60px 50%; }
 			.drilldownSelectorContainer .drilldownSelectorMenu li a {
 				display: block;
-				margin: 0; padding: 8px;
-				background-color: #f2f2f2;
+				margin: 0; padding: 8px 30px;
+				background: #f2f2f2 url(img/arrow-forward-inactive.png) 5px 50% no-repeat;
+					background-repeat: no-repeat;
+					background-position: 5px 50%;
 				border-top: 2px solid #fafafa;
 				font-family: Helvetica, Arial, sans-serif;
 				font-size: 12px;
+				line-height: 14px;
 				font-weight: bold;
 				text-decoration: none;			
 				color: #375978;
@@ -55,9 +71,6 @@
 				.drilldownSelectorContainer .drilldownSelectorMenu li a:hover {
 					background-color: #fafafa;
 				}
-				.drilldownSelectorContainer .drilldownSelectorMenu li a.hasSubs {
-					padding-left: 30px;
+				.drilldownSelectorContainer .drilldownSelectorMenu li.hasSubs a {
 					background-image: url(img/arrow-forward.png);
-					background-repeat: no-repeat;
-					background-position: 5px 50%;
 				}
