@@ -5,7 +5,7 @@
         var plugin = this,
             internal = {};
         /** Public Variables **/
-		plugin.vars = {
+        plugin.vars = {
             currentLevel: 1,
             sectionCounter: 0,
             jsonString: "{\"sections\": [",
@@ -14,17 +14,38 @@
         };
         /** Default Settings **/
         internal.defaults = {
-        	containerClass: "drilldownSelectorContainer",
-            loaderClass: "drilldownSelectorLoader"
+            containerClass: "drilldownSelectorContainer",
+            loaderClass: "drilldownSelectorLoader",
+            loaderText: "Loading...",
+            menuClass: "drilldownSelectorMenu",
+            hasSubsClass: "hasSubs",
+            goBackClass: "goBack"
         };
-        
+        /** Elements / jQuery Objects **/
         internal.$element = $(element);
         internal.element = element;
+        internal.$container = null;
+        internal.$loader = null;
+        internal.$menu = null;
+        /** Internal Settings Declaration **/
         internal.settings = {};
+        /** Internal Methods **/
         internal.methods = {
-        	generateContainer: function() {
-                internal.$element.after("<div class=\"" + internal.settings.containerClass + "\"></div>");
-        	},
+            generateContainer: function () {
+                internal.$container = $("<div class=\"" + internal.settings.containerClass + "\"></div>").insertAfter(internal.$element);
+                internal.$loader = $("<p class=\"" + internal.settings.loaderClass + "\">" + internal.settings.loaderText + "</p>").appendTo(internal.$container);
+                internal.$menu = $("<div class=\"" + internal.settings.menuClass + "\"></div>").appendTo(internal.$container);
+            },
+            showLoader: function () {
+                internal.$container.show();
+                internal.$menu.hide();
+                internal.$loader.show();
+            },
+            showSelector: function () {
+                internal.$container.show();
+                internal.$loader.hide();
+                internal.$menu.show();
+            },
             addSection: function (itemLevel, text, value) {
                 var levelCount = 0,
                     json = "";
@@ -77,12 +98,21 @@
                     html += "</ul>";
                 }
                 return html;
+            },
+            addClasses: function () {
+            	internal.$menu.find("li").each(function() {
+            		if ($(this).find("ul").length > 0) {
+            			$(this).children("a").addClass(internal.settings.hasSubsClass);
+            		}
+            	});
             }
         };
         plugin.init = function () {
-            internal.settings = $.extend({}, defaults, options);
-            internal.methods
+            internal.settings = $.extend({}, internal.defaults, options);
 
+            internal.$element.hide();
+            internal.methods.generateContainer();
+            internal.methods.showLoader();
 
             internal.$element.find("option").each(function () {
                 var tempTextNode = $(this).text(),
@@ -117,7 +147,9 @@
             plugin.vars.jsonString += internal.methods.endJSON();
             plugin.vars.jsonData = JSON.parse(plugin.vars.jsonString);
             plugin.vars.htmlString = internal.methods.buildHTML(plugin.vars.jsonData);
-            internal.$element.after(plugin.vars.htmlString);
+            internal.$menu.append(plugin.vars.htmlString);
+            internal.methods.addClasses();
+            internal.methods.showSelector();
         };
         plugin.init();
     };

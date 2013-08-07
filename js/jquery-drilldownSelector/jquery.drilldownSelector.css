@@ -1,0 +1,63 @@
+/** Container **/
+.drilldownSelectorContainer {
+	display: block;
+	width: auto;
+	max-width: 300px;
+	height: auto;
+}
+/** Loader **/
+.drilldownSelectorContainer .drilldownSelectorLoader {
+	text-indent: -9999em;
+	display: block;
+	width: auto;
+	height: 50px
+	text-align: ltr;
+	margin:0; padding:0;
+	background: transparent url(img/loader.gif) 50% 50% no-repeat;
+}
+/** Menu **/
+.drilldownSelectorContainer .drilldownSelectorMenu {
+	display: block;
+	width: auto;
+	height: auto;
+	margin: 0; padding: 0;
+	position: relative;
+	border-top: 1px solid #d1d1d1;
+	border-left: 1px solid #d1d1d1;
+	border-right: 1px solid #d1d1d1;
+}
+	.drilldownSelectorContainer .drilldownSelectorMenu ul {
+		display: block;
+		list-style-type: none;
+		margin: 0; padding: 0;
+	}
+		.drilldownSelectorContainer .drilldownSelectorMenu > ul ul{
+			display: none;
+		}
+		.drilldownSelectorContainer .drilldownSelectorMenu li {
+			display: block;
+			list-style-type: none;
+			margin: 0; padding: 0;
+			border-bottom: 1px solid #d1d1d1;
+			
+		}
+			.drilldownSelectorContainer .drilldownSelectorMenu li a {
+				display: block;
+				margin: 0; padding: 8px;
+				background-color: #f2f2f2;
+				border-top: 2px solid #fafafa;
+				font-family: Helvetica, Arial, sans-serif;
+				font-size: 12px;
+				font-weight: bold;
+				text-decoration: none;			
+				color: #375978;
+			}
+				.drilldownSelectorContainer .drilldownSelectorMenu li a:hover {
+					background-color: #fafafa;
+				}
+				.drilldownSelectorContainer .drilldownSelectorMenu li a.hasSubs {
+					padding-left: 30px;
+					background-image: url(img/arrow-forward.png);
+					background-repeat: no-repeat;
+					background-position: 5px 50%;
+				}
