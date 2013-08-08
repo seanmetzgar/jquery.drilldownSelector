@@ -1,17 +1,19 @@
 /** Container **/
 .drilldownSelectorContainer {
 	display: block;
-	width: 300px;
+	width: 400px;
 	height: auto;
+	padding:0 5px 5px;
+	border: 1px solid #d1d1d1;
+	overflow: hidden;
 }
 /** Loader **/
 .drilldownSelectorContainer .drilldownSelectorLoader {
 	text-indent: -9999em;
 	display: block;
-	width: auto;
-	height: 50px
+	width: auto; height: auto;
 	text-align: ltr;
-	margin:0; padding:0;
+	margin:0; padding:50px 0;
 	background: transparent url(img/loader.gif) 50% 50% no-repeat;
 }
 /** Nav **/
@@ -19,7 +21,6 @@
 	display: block;
 	width: auto;
 	height: auto;
-	background-color: #f2f2f2;
 	padding: 0; margin: 0;
 	overflow: hidden;
 }
