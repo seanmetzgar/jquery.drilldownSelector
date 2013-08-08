@@ -1,3 +1,9 @@
+/**** 
+*  jQuery Drilldown Selector
+*  A jQuery plugin for turning the Drupal Workbench Access Sections in to a Drilldown menu.
+*  version: 1.0.0
+*  author: Sean Metzgar
+****/
 (function ($) {
     "use strict";
     $.drilldownSelector = function (element, options) {
@@ -6,6 +12,8 @@
             buildVars = {},
             internal = {};
         /** Public Variables **/
+        plugin.version = "1.0.0";
+        /** Build Variables **/
         buildVars = {
             currentLevel: 1,
             sectionCounter: 0,
@@ -278,6 +286,7 @@
             if (window.setTimeout) {
                 window.setTimeout(function () {
                     internal.methods.buildJSON();
+                    internal.methods.buildMenu();
                     internal.methods.addClasses();
                     internal.methods.addCheckboxes();
                     internal.methods.addListeners();
@@ -287,6 +296,7 @@
                 }, 1000);
             } else {
                 internal.methods.buildJSON();
+                internal.methods.buildMenu();
                 internal.methods.addClasses();
                 internal.methods.addCheckboxes();
                 internal.methods.addListeners();

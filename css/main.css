@@ -97,14 +97,14 @@ textarea {
    Author's custom styles
    ========================================================================== */
 .form-item {
-	display: block;
-	margin: 10px auto;
-	width: 450px;
-	overflow: hidden;
+    display: block;
+    margin: 10px auto;
+    width: 750px;
+    overflow: hidden;
 }
 .form-item select {
-	width: auto;
-	display: block;
+    width: auto;
+    display: block;
 }
 
 /* ==========================================================================
