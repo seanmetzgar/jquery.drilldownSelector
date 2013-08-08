@@ -19,6 +19,11 @@
             loaderClass: "drilldownSelectorLoader",
             loaderText: "Loading...",
             menuClass: "drilldownSelectorMenu",
+            navClass: "drilldownSelectorNav",
+            navBackClass: "back",
+            navBackText: "Back",
+            navHomeClass: "home",
+            navHomeText: "Home",
             hasSubsClass: "hasSubs",
             goBackClass: "goBack",
             checkboxClass: "checkbox"
@@ -29,23 +34,32 @@
         internal.$container = null;
         internal.$loader = null;
         internal.$menu = null;
+        internal.$nav = null;
+        internal.$navBack = null;
+        internal.$navHome = null;
         /** Internal Settings Declaration **/
         internal.settings = {};
         /** Internal Methods **/
         internal.methods = {
             generateContainer: function () {
                 internal.$container = $("<div class=\"" + internal.settings.containerClass + "\"></div>").insertAfter(internal.$element);
+                internal.$nav = $("<div class=\"" + internal.settings.navClass + "\"></div>").appendTo(internal.$container);
+                internal.$navBack = $("<a href=\"#\" class=\"" + internal.settings.navBackClass + "\">" + internal.settings.navBackText + "</a>").appendTo(internal.$nav);
+                internal.$navHome = $("<a href=\"#\" class=\"" + internal.settings.navHomeClass + "\">" + internal.settings.navHomeText + "</a>").appendTo(internal.$nav);
                 internal.$loader = $("<p class=\"" + internal.settings.loaderClass + "\">" + internal.settings.loaderText + "</p>").appendTo(internal.$container);
                 internal.$menu = $("<div class=\"" + internal.settings.menuClass + "\"></div>").appendTo(internal.$container);
+                
             },
             showLoader: function () {
-                internal.$container.show();
+                internal.$container.show();                
+                internal.$nav.hide();
                 internal.$menu.hide();
                 internal.$loader.show();
             },
             showSelector: function () {
                 internal.$container.show();
                 internal.$loader.hide();
+                internal.$nav.show();
                 internal.$menu.show();
             },
             addSection: function (itemLevel, text, value, selected) {
@@ -68,7 +82,7 @@
                     } else { json = false; }
                 }
                 if (json !== false) {
-                    json += "{\"text\": \"" + text + "\", \"value\": \"" + value + "\"";
+                    json += "{\"text\": \"" + text + "\", \"value\": \"" + value + "\", \"selected\": " + (selected ? "true":"false");
                     plugin.vars.sectionCounter = plugin.vars.sectionCounter + 1;
                 }
                 return json;
@@ -91,10 +105,8 @@
                     for (key in data.sections) {
                         if (data.sections.hasOwnProperty(key)) {
                             section = data.sections[key];
-                            html += "<li><a href=\"#\" data-value=\"";
-                            html += section.value + "\"";
-                            html += (section.selected === true) ? "class=\"selected\"":"";
-                            html += ">" + section.text + "</a>";
+                            html += "<li" + ((section.selected === true) ? " class=\"selected\"":"") + "><a href=\"#\" data-value=\"";
+                            html += section.value + "\">" + section.text + "</a>";
                             //Possible stack overflow... oh well...
                             if (section.sections && section.sections.length > 0) { html += internal.methods.buildHTML(section); }
                             html += "</li>";
@@ -105,42 +117,110 @@
                 return html;
             },
             addClasses: function () {
-            	var $activeUl = internal.$menu.find("ul.active");
+            	var $activeCheckbox = internal.$menu.find("li.selected");
             	internal.$menu.find("li").each(function() {
             		if ($(this).find("ul").length > 0) {
             			$(this).addClass(internal.settings.hasSubsClass);
             		}
             	});
             	
-            	if ($activeUl.length === 0) {
+            	if ($activeCheckbox.length === 0) {
             		internal.$menu.children("ul").addClass("active");
-            	} else if ($activeUl.length > 1) {
-            		$activeUl.children("li:selected").parent("ul").addClass("active");
-            	} 
+            	} else if ($activeCheckbox.length === 1) {
+            		$activeCheckbox.parent("ul").addClass("active");           		
+            	} else {
+            		$activeCheckbox.removeClass("selected");
+            		internal.$menu.children("ul").addClass("active");
+            	}
+            	internal.methods.fixHeight();
+            	internal.methods.checkBackButton();
             },
             addCheckboxes: function () {
+            	var $currentCheckbox = null;
             	internal.$menu.find("li").each(function () {
             		if (!isNaN($(this).children("a").attr("data-value"))) {
             			$(this).children("a").append("<span class=\"checkbox\">&nbsp;</span>");
             		}
-            	})
+            	});
+            	$currentCheckbox = internal.$menu.find(".selected .checkbox").eq(0);
+            	if ($currentCheckbox.length === 1) {
+            		internal.methods.selectCheckbox($currentCheckbox);
+            	}
             },
-            addListeners: function() {
+            addListeners: function () {
             	internal.$menu.find("a").click(function (e) {
             		var $parentLi = null;
             		e.preventDefault();
             		$parentLi = $(this).parent("li");
-            		if ($parentLi.hasClass(internal.settings.hasSubsClass)) {
-            			internal.$menu.find("ul").removeClass("active");
-            			$parentLi.children("ul").addClass("active");
+            		internal.methods.goForward($parentLi);
+            	});
+            	internal.$menu.find(".checkbox").click(function (e) {
+            		e.preventDefault();            		
+            		e.stopPropagation();
+            		if ($(this).parents("li").eq(0).hasClass("selected")) {
+            			internal.methods.deselectCheckbox();
+            		} else { 
+            			internal.methods.selectCheckbox($(this)); 
             		}
             	});
+            	internal.$navBack.click(function (e) {
+            		e.preventDefault();
+            		internal.methods.goBack(false);
+            	});
+            	internal.$navHome.click(function (e) {
+            		e.preventDefault();
+            		internal.methods.goBack(true);
+            	});
+            },
+            deselectCheckbox: function () {
+            	internal.$element.find("option:selected").prop("selected", false);
+            	internal.$menu.find("li").removeClass("selected");
+            },
+            selectCheckbox: function ($checkbox) {
+        		var $parentA = $checkbox.parent("a"),
+        		    $parentLi = $parentA.parent("li"),
+        		    value = $parentA.attr("data-value");
+        		internal.methods.deselectCheckbox();
+        		$checkbox.parent("a").parent("li").addClass("selected");
+        		internal.$element.find("option[value=" + value + "]").prop("selected", true);	
+            },
+            goBack: function (home) {
+            	home = (typeof home === "boolean") ? home : false;
+				internal.methods.deselectCheckbox();
+				if (home) {
+					internal.$menu.find(".active").removeClass("active");
+					internal.$menu.children("ul").addClass("active");	
+				} else {
+					internal.$menu.find(".active").removeClass("active").parents("ul:eq(0)").addClass("active");	
+				}
+				internal.methods.fixHeight();				
+        		internal.methods.checkBackButton();
+           	},
+            goForward: function ($li) {
+           		if ($li.hasClass(internal.settings.hasSubsClass)) {
+        			internal.methods.deselectCheckbox();
+        			internal.$menu.find(".active").removeClass("active");
+        			$li.children("ul").addClass("active");
+        			internal.methods.fixHeight();
+        			internal.methods.checkBackButton();
+        		}
+            },
+            fixHeight: function () {
+            	internal.$menu.height(internal.$menu.find(".active").height());
+            },
+            checkBackButton: function () {
+            	if (internal.$menu.children("ul").hasClass("active")) {
+            		internal.$navBack.hide();
+            	} else {
+            		internal.$navBack.show();
+            	}
             }
+            
         };
         plugin.init = function () {
             internal.settings = $.extend({}, internal.defaults, options);
 
-            internal.$element.hide();
+            //internal.$element.hide();
             internal.methods.generateContainer();
             internal.methods.showLoader();
 
@@ -168,7 +248,7 @@
                                 tempLevel = tempMatch[0].replace(/\s/i, "").length;
                                 tempText = tempTextNode.replace(tempMatch[0], "");
                                 // Add level
-                                tempJson = internal.methods.addSection(tempLevel, tempText, tempValue);
+                                tempJson = internal.methods.addSection(tempLevel, tempText, tempValue, tempSelected);
                                 if (tempJson) {
                                     plugin.vars.jsonString += tempJson;
                                     plugin.vars.currentLevel = tempLevel;
@@ -189,7 +269,9 @@
             internal.methods.addClasses();
             internal.methods.addCheckboxes();
             internal.methods.addListeners();
+            internal.methods.checkBackButton();
             internal.methods.showSelector();
+            internal.methods.fixHeight();
         };
         plugin.init();
     };

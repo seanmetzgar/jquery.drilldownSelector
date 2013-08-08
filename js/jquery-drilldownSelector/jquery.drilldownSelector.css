@@ -1,8 +1,7 @@
 /** Container **/
 .drilldownSelectorContainer {
 	display: block;
-	width: auto;
-	max-width: 300px;
+	width: 300px;
 	height: auto;
 }
 /** Loader **/
@@ -15,6 +14,53 @@
 	margin:0; padding:0;
 	background: transparent url(img/loader.gif) 50% 50% no-repeat;
 }
+/** Nav **/
+.drilldownSelectorContainer .drilldownSelectorNav {
+	display: block;
+	width: auto;
+	height: auto;
+	background-color: #f2f2f2;
+	padding: 0; margin: 0;
+	overflow: hidden;
+}
+	.drilldownSelectorContainer .drilldownSelectorNav a {
+		display: block;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		-moz-box-shadow: 0 0 0 1px #d1d1d1;
+		-webkit-box-shadow: 0 0 0 1px #d1d1d1;
+		box-shadow: 0 0 0 1px #d1d1d1;
+		background-color: #f2f2f2;
+		border-top: 2px solid #fafafa;
+		padding: 8px;
+		margin: 5px;
+		width: auto;
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 12px;
+		line-height: 14px;
+		font-weight: bold;
+		text-decoration: none;			
+		color: #375978;
+		overflow: hidden;
+	}
+		.drilldownSelectorContainer .drilldownSelectorNav a:hover {
+			background-color: #fafafa;
+		}
+		.drilldownSelectorContainer .drilldownSelectorNav a.back {
+			padding-left: 30px;
+			background-image: url(img/back.png);
+			background-position: 5px 50%;
+			background-repeat: no-repeat;
+			float: left;
+		}
+		.drilldownSelectorContainer .drilldownSelectorNav a.home {
+			padding-left: 30px;
+			background-image: url(img/home.png);
+			background-position: 5px 50%;
+			background-repeat: no-repeat;
+			float: right;
+		}
 /** Menu **/
 .drilldownSelectorContainer .drilldownSelectorMenu {
 	display: block;
@@ -27,21 +73,36 @@
 	border-right: 1px solid #d1d1d1;
 }
 	.drilldownSelectorContainer .drilldownSelectorMenu ul {
-		display: none;
+		display: block;
 		list-style-type: none;
 		margin: 0; padding: 0;
-	}
+		width: 100%; height: 0px;
+		position: absolute;
+		top:0; left: 0;
+		z-index:1;
+	}		
 		.drilldownSelectorContainer .drilldownSelectorMenu ul.active {
-			display: block;
+			top:0; left:0;
+			z-index:10;
+			width: 100%;
+			height: auto;
 		}
-		.drilldownSelectorContainer .drilldownSelectorMenu li {
+			.drilldownSelectorContainer .drilldownSelectorMenu ul.active ul {
+				display: none;
+			}
+		.drilldownSelectorContainer .drilldownSelectorMenu ul li {
+			height: 0;
+			overflow: hidden;	
+		}
+		.drilldownSelectorContainer .drilldownSelectorMenu ul.active > li {
+			position: static;
 			display: block;
 			list-style-type: none;
 			margin: 0; padding: 0;
 			border-bottom: 1px solid #d1d1d1;
-			position: relative;			
+			width: 100%; height: auto;	
 		}
-			.drilldownSelectorContainer .drilldownSelectorMenu li .checkbox {
+			.drilldownSelectorContainer .drilldownSelectorMenu a .checkbox {
 				display: block;				
 				width: 21px;
 				position: absolute;
@@ -67,10 +128,11 @@
 				font-weight: bold;
 				text-decoration: none;			
 				color: #375978;
+				position: relative;
 			}
 				.drilldownSelectorContainer .drilldownSelectorMenu li a:hover {
 					background-color: #fafafa;
 				}
-				.drilldownSelectorContainer .drilldownSelectorMenu li.hasSubs a {
+				.drilldownSelectorContainer .drilldownSelectorMenu li.hasSubs > a {
 					background-image: url(img/arrow-forward.png);
 				}
