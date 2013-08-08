@@ -45,6 +45,15 @@
         internal.settings = {};
         /** Internal Methods **/
         internal.methods = {
+            /** Constructor Methods **/
+            buildFramework: function () {
+                internal.$container = $("<div class=\"" + internal.settings.containerClass + "\"></div>").insertAfter(internal.$element);
+                internal.$nav = $("<div class=\"" + internal.settings.navClass + "\"></div>").appendTo(internal.$container);
+                internal.$navBack = $("<a href=\"#\" class=\"" + internal.settings.navBackClass + "\">" + internal.settings.navBackText + "</a>").appendTo(internal.$nav);
+                internal.$navHome = $("<a href=\"#\" class=\"" + internal.settings.navHomeClass + "\">" + internal.settings.navHomeText + "</a>").appendTo(internal.$nav);
+                internal.$loader = $("<p class=\"" + internal.settings.loaderClass + "\">" + internal.settings.loaderText + "</p>").appendTo(internal.$container);
+                internal.$menu = $("<div class=\"" + internal.settings.menuClass + "\"></div>").appendTo(internal.$container);
+            },
             buildJSON: function () {
                 internal.$element.find("option").each(function () {
                     var tempTextNode = $(this).text(),
@@ -86,29 +95,32 @@
                 });
                 internal.jsonString += internal.methods.endJSON();
                 internal.jsonData = JSON.parse(internal.jsonString);
+            },
+            buildHTML: function (data) {
+                var html = "",
+                    key = null,
+                    section = null;
+                if (data.hasOwnProperty("sections") && data.sections.length > 0) {
+                    html += "<ul>";
+                    for (key in data.sections) {
+                        if (data.sections.hasOwnProperty(key)) {
+                            section = data.sections[key];
+                            html += "<li" + ((section.selected === true) ? " class=\"selected\"" : "") + "><a href=\"#\" data-value=\"";
+                            html += section.value + "\">" + section.text + "</a>";
+                            //Possible stack overflow... oh well...
+                            if (section.sections && section.sections.length > 0) { html += internal.methods.buildHTML(section); }
+                            html += "</li>";
+                        }
+                    }
+                    html += "</ul>";
+                }
+                return html;
+            },
+            buildMenu: function () {
                 internal.htmlString = internal.methods.buildHTML(internal.jsonData);
                 internal.$menu.append(internal.htmlString);
             },
-            generateContainer: function () {
-                internal.$container = $("<div class=\"" + internal.settings.containerClass + "\"></div>").insertAfter(internal.$element);
-                internal.$nav = $("<div class=\"" + internal.settings.navClass + "\"></div>").appendTo(internal.$container);
-                internal.$navBack = $("<a href=\"#\" class=\"" + internal.settings.navBackClass + "\">" + internal.settings.navBackText + "</a>").appendTo(internal.$nav);
-                internal.$navHome = $("<a href=\"#\" class=\"" + internal.settings.navHomeClass + "\">" + internal.settings.navHomeText + "</a>").appendTo(internal.$nav);
-                internal.$loader = $("<p class=\"" + internal.settings.loaderClass + "\">" + internal.settings.loaderText + "</p>").appendTo(internal.$container);
-                internal.$menu = $("<div class=\"" + internal.settings.menuClass + "\"></div>").appendTo(internal.$container);
-            },
-            showLoader: function () {
-                internal.$container.show();
-                internal.$nav.hide();
-                internal.$menu.hide();
-                internal.$loader.show();
-            },
-            showSelector: function () {
-                internal.$container.show();
-                internal.$loader.hide();
-                internal.$nav.show();
-                internal.$menu.show();
-            },
+            /** JSON Helper Methods **/
             addSection: function (itemLevel, text, value, selected) {
                 var levelCount = 0,
                     json = "";
@@ -143,26 +155,7 @@
                 json += "}";
                 return json;
             },
-            buildHTML: function (data) {
-                var html = "",
-                    key = null,
-                    section = null;
-                if (data.hasOwnProperty("sections") && data.sections.length > 0) {
-                    html += "<ul>";
-                    for (key in data.sections) {
-                        if (data.sections.hasOwnProperty(key)) {
-                            section = data.sections[key];
-                            html += "<li" + ((section.selected === true) ? " class=\"selected\"" : "") + "><a href=\"#\" data-value=\"";
-                            html += section.value + "\">" + section.text + "</a>";
-                            //Possible stack overflow... oh well...
-                            if (section.sections && section.sections.length > 0) { html += internal.methods.buildHTML(section); }
-                            html += "</li>";
-                        }
-                    }
-                    html += "</ul>";
-                }
-                return html;
-            },
+            /** HTML Helper Methods **/
             addClasses: function () {
                 var $activeCheckbox = internal.$menu.find("li.selected");
                 internal.$menu.find("li").each(function () {
@@ -193,6 +186,7 @@
                     internal.methods.selectCheckbox($currentCheckbox);
                 }
             },
+            /** Core Functionality Methods **/
             addListeners: function () {
                 internal.$menu.find("a").click(function (e) {
                     var $parentLi = null;
@@ -251,21 +245,35 @@
                     internal.methods.checkBackButton();
                 }
             },
-            fixHeight: function () {
-                internal.$menu.height(internal.$menu.find(".active").height());
-            },
             checkBackButton: function () {
                 if (internal.$menu.children("ul").hasClass("active")) {
                     internal.$navBack.hide();
                 } else {
                     internal.$navBack.show();
                 }
+            },
+            /** Helper Methods **/
+            showLoader: function () {
+                internal.$container.show();
+                internal.$nav.hide();
+                internal.$menu.hide();
+                internal.$loader.show();
+            },
+            showSelector: function () {
+                internal.$container.show();
+                internal.$loader.hide();
+                internal.$nav.show();
+                internal.$menu.show();
+            },
+            fixHeight: function () {
+                internal.$menu.height(internal.$menu.find(".active").height());
             }
         };
+        /** Initialization Method **/
         plugin.init = function () {
             internal.settings = $.extend({}, internal.defaults, options);
             internal.$element.hide();
-            internal.methods.generateContainer();
+            internal.methods.buildFramework();
             internal.methods.showLoader();
             if (window.setTimeout) {
                 window.setTimeout(function () {
@@ -287,6 +295,7 @@
                 internal.methods.fixHeight();
             }
         };
+        /** Get Current Value Method **/
         plugin.getValue = function () {
             var rVal = false,
                 tempVal = internal.$element.val();

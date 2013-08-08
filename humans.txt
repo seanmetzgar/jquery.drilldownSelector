@@ -3,11 +3,12 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+    Sean Metzgar -- Developer -- @seanmetzgar
 
 # THANKS
 
-    <name>
+    Martha McGarey
+    
 
 # TECHNOLOGY COLOPHON
 
