@@ -76,9 +76,6 @@ AVAILABLE OPTIONS:
         hasSubsClass:       "hasSubs",
             //Class for <li>s that have a subsection.
         
-        goBackClass:        "goBack",
-            //Deprecated
-        
         checkboxClass:      "checkbox",
             //Class for the checkbox
         

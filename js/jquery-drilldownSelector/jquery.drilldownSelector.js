@@ -34,7 +34,6 @@
             navHomeClass: "home",
             navHomeText: "Home",
             hasSubsClass: "hasSubs",
-            goBackClass: "goBack",
             checkboxClass: "checkbox",
             onChange: function () { return false; }
         };
