@@ -1,8 +1,8 @@
 jquery.drilldownSelector
+========================
 
-========================
-1. OVERVIEW:
-========================
+OVERVIEW:
+---------
 
 This jQuery plugin generates a HTML/CSS/jQuery driven drilldown menu
 for selecting a Drupal Workbench Access Section on node edit & create 
@@ -11,84 +11,82 @@ module, and replace it with a nested <ul> structure.  Users can
 navigate through this structure much more easily than scrolling down
 through a large list of available sections.
 
-========================
-2. USAGE:
-========================
+USAGE:
+------
 
-INCLUDE FILES:
-    jquery,
-    jquery.drilldownSelector.min.js or jquery.drilldownSelector.js,
-    jquery.drilldownSelector.min.css or jquery.drilldownSelector.css
+###INCLUDE FILES:###
+* jquery,
+* jquery.drilldownSelector.min.js or jquery.drilldownSelector.js,
+* jquery.drilldownSelector.min.css or jquery.drilldownSelector.css
 
+###HTML EXAMPLE:###
+The following structure will be used.
 
-HTML EXAMPLE:
+```html
+<select multiple="multiple" name="workbench_access[]" 
+id="edit-workbench-access--2" class="form-select required">
+    <option value="menu-main"> Main</option>
+    <option value="1001">- About Us</option>
+    <option value="1002" selected>-- Locations</option>
+    <option value="1003">--- Philadelphia, PA</option>
+    <option value="1004">--- New York, NY</option>
+    ...
+</select>
+```
 
-    The following structure will be used.
+###INITIALIZE PLUGIN:###
+```javascript
+jQuery("edit-workbench-access--2").drilldownSelector({ options... });
+```
+
+###AVAILABLE OPTIONS:###
+An object of options can be passed in in JavaScript Object Notation;
+below are all available options and their default values.
+
+```javascript
+containerClass:     "drilldownSelectorContainer",
+//Class for the parent <div>
     
-    <select multiple="multiple" name="workbench_access[]" 
-    id="edit-workbench-access--2" class="form-select required">
-        <option value="menu-main"> Main</option>
-        <option value="1001">- About Us</option>
-        <option value="1002" selected>-- Locations</option>
-        <option value="1003">--- Philadelphia, PA</option>
-        <option value="1004">--- New York, NY</option>
-        ...
-    </select>
+loaderClass:        "drilldownSelectorLoader",
+//Class for the loading bar <div>
 
+loaderText:         "Loading...",
+//String for the loading text (replaced by image in default CSS)
 
-INITIALIZE PLUGIN:
-    
-    jQuery("edit-workbench-access--2").drilldownSelector({ options... });
+menuClass:          "drilldownSelectorMenu",
+//Class for the <div> containing the <ul> structure
 
+navClass:           "drilldownSelectorNav",
+//Class for the <div> containing the Home and Back buttons.
 
-AVAILABLE OPTIONS:
+navBackClass:       "back",
+//Class for the Back button
 
-    An object of options can be passed in in JavaScript Object Notation;
-    below are all available options and their default values.
+navBackText:        "Back",
+//Text for the Back button
 
-        containerClass:     "drilldownSelectorContainer",
-            //Class for the parent <div>
-                            
-        loaderClass:        "drilldownSelectorLoader",
-            //Class for the loading bar <div>
-                            
-        loaderText:         "Loading...",
-            //String for the loading text (replaced by image in default CSS)
-                            
-        menuClass:          "drilldownSelectorMenu",
-            //Class for the <div> containing the <ul> structure
-                            
-        navClass:           "drilldownSelectorNav",
-            //Class for the <div> containing the Home and Back buttons.
-                            
-        navBackClass:       "back",
-            //Class for the Back button
-                            
-        navBackText:        "Back",
-            //Text for the Back button
-                            
-        navHomeClass:       "home",
-            //Class for the Home button
-                            
-        navHomeText:        "Home",
-            //Text for the Home button
-        
-        hasSubsClass:       "hasSubs",
-            //Class for <li>s that have a subsection.
-        
-        checkboxClass:      "checkbox",
-            //Class for the checkbox
-        
-        onChange:           function () { return false; }  
-            //Callback function on CHECKBOX change.
+navHomeClass:       "home",
+//Class for the Home button
 
+navHomeText:        "Home",
+//Text for the Home button
 
-PUBLIC METHODS:
+hasSubsClass:       "hasSubs",
+//Class for <li>s that have a subsection.
 
-    Once the plugin has been initialized, the following public method
-    will be available for use:
+checkboxClass:      "checkbox",
+//Class for the checkbox
 
-    .getValue():
-    
-        $("[original selector]").data("drilldownSelector").getValue();
-        This method will return the current selected item's value.
+onChange:           function () { return false; }  
+//Callback function on CHECKBOX change.
+```
+
+###PUBLIC METHODS:###
+Once the plugin has been initialized, the following public method
+will be available for use:
+
+```javascript
+$("[original selector]").data("drilldownSelector").getValue();
+//This method will return the current selected item's value.
+```
+
