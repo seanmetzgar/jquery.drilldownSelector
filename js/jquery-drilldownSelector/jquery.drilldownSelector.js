@@ -1,7 +1,7 @@
 /**** 
 *  jQuery Drilldown Selector
 *  A jQuery plugin for turning the Drupal Workbench Access Sections in to a Drilldown menu.
-*  version: 1.0.0
+*  version: 1.0.1
 *  author: Sean Metzgar
 ****/
 (function ($) {
@@ -12,7 +12,7 @@
             buildVars = {},
             internal = {};
         /** Public Variables **/
-        plugin.version = "1.0.0";
+        plugin.version = "1.0.1";
         /** Build Variables **/
         buildVars = {
             currentLevel: 1,
@@ -35,7 +35,8 @@
             navHomeText: "Home",
             hasSubsClass: "hasSubs",
             goBackClass: "goBack",
-            checkboxClass: "checkbox"
+            checkboxClass: "checkbox",
+            onChange: function () { return false; }
         };
         /** Elements / jQuery Objects **/
         internal.$element = $(element);
@@ -221,7 +222,7 @@
                 });
             },
             deselectCheckbox: function () {
-                internal.$element.find("option:selected").prop("selected", false);
+                internal.$element.find("option").prop("selected", false);
                 internal.$menu.find("li").removeClass("selected");
             },
             selectCheckbox: function ($checkbox) {
@@ -231,6 +232,7 @@
                 internal.methods.deselectCheckbox();
                 $parentLi.addClass("selected");
                 internal.$element.find("option[value=" + value + "]").prop("selected", true);
+                internal.settings.onChange();
             },
             goBack: function (home) {
                 home = (typeof home === "boolean") ? home : false;
@@ -280,7 +282,7 @@
         /** Initialization Method **/
         plugin.init = function () {
             internal.settings = $.extend({}, internal.defaults, options);
-            internal.$element.hide();
+            //internal.$element.hide();
             internal.methods.buildFramework();
             internal.methods.showLoader();
             if (window.setTimeout) {
