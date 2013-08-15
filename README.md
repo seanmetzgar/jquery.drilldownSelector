@@ -44,38 +44,17 @@ An object of options can be passed in in JavaScript Object Notation;
 below are all available options and their default values.
 
 ```javascript
-containerClass:     "drilldownSelectorContainer",
-//Class for the parent <div>
-    
-loaderClass:        "drilldownSelectorLoader",
-//Class for the loading bar <div>
+theme:              "default",
+//String, applied as a class to the container, to determine the theme.
 
 loaderText:         "Loading...",
 //String for the loading text (replaced by image in default CSS)
 
-menuClass:          "drilldownSelectorMenu",
-//Class for the <div> containing the <ul> structure
-
-navClass:           "drilldownSelectorNav",
-//Class for the <div> containing the Home and Back buttons.
-
-navBackClass:       "back",
-//Class for the Back button
-
 navBackText:        "Back",
 //Text for the Back button
 
-navHomeClass:       "home",
-//Class for the Home button
-
 navHomeText:        "Home",
 //Text for the Home button
-
-hasSubsClass:       "hasSubs",
-//Class for <li>s that have a subsection.
-
-checkboxClass:      "checkbox",
-//Class for the checkbox
 
 onChange:           function () { return false; }  
 //Callback function on CHECKBOX change.

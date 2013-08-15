@@ -24,17 +24,10 @@
         };
         /** Default Settings **/
         internal.defaults = {
-            containerClass: "drilldownSelectorContainer",
-            loaderClass: "drilldownSelectorLoader",
+            theme: "thin",
             loaderText: "Loading...",
-            menuClass: "drilldownSelectorMenu",
-            navClass: "drilldownSelectorNav",
-            navBackClass: "back",
             navBackText: "Back",
-            navHomeClass: "home",
             navHomeText: "Home",
-            hasSubsClass: "hasSubs",
-            checkboxClass: "checkbox",
             onChange: function () { return false; }
         };
         /** Elements / jQuery Objects **/
@@ -49,18 +42,28 @@
         internal.jsonString = "{\"sections\": [";
         internal.jsonData = null;
         internal.htmlString = "";
+        internal.classes = {
+            containerClass: "drilldownSelectorContainer",
+            loaderClass: "drilldownSelectorLoader",
+            menuClass: "drilldownSelectorMenu",
+            navClass: "drilldownSelectorNav",
+            navBackClass: "back",
+            navHomeClass: "home",
+            hasSubsClass: "hasSubs",
+            checkboxClass: "checkbox"
+        };
         /** Internal Settings Declaration **/
         internal.settings = {};
         /** Internal Methods **/
         internal.methods = {
             /** Constructor Methods **/
             buildFramework: function () {
-                internal.$container = $("<div class=\"" + internal.settings.containerClass + "\"></div>").insertAfter(internal.$element);
-                internal.$nav = $("<div class=\"" + internal.settings.navClass + "\"></div>").appendTo(internal.$container);
-                internal.$navBack = $("<a href=\"#\" class=\"" + internal.settings.navBackClass + "\">" + internal.settings.navBackText + "</a>").appendTo(internal.$nav);
-                internal.$navHome = $("<a href=\"#\" class=\"" + internal.settings.navHomeClass + "\">" + internal.settings.navHomeText + "</a>").appendTo(internal.$nav);
-                internal.$loader = $("<p class=\"" + internal.settings.loaderClass + "\">" + internal.settings.loaderText + "</p>").appendTo(internal.$container);
-                internal.$menu = $("<div class=\"" + internal.settings.menuClass + "\"></div>").appendTo(internal.$container);
+                internal.$container = $("<div class=\"" + internal.classes.containerClass + " " + internal.settings.theme + "\"></div>").insertAfter(internal.$element);
+                internal.$nav = $("<div class=\"" + internal.classes.navClass + "\"></div>").appendTo(internal.$container);
+                internal.$navBack = $("<a href=\"#\" class=\"" + internal.classes.navBackClass + "\">" + internal.settings.navBackText + "</a>").appendTo(internal.$nav);
+                internal.$navHome = $("<a href=\"#\" class=\"" + internal.classes.navHomeClass + "\">" + internal.settings.navHomeText + "</a>").appendTo(internal.$nav);
+                internal.$loader = $("<p class=\"" + internal.classes.loaderClass + "\">" + internal.settings.loaderText + "</p>").appendTo(internal.$container);
+                internal.$menu = $("<div class=\"" + internal.classes.menuClass + "\"></div>").appendTo(internal.$container);
             },
             buildJSON: function () {
                 internal.$element.find("option").each(function () {
@@ -168,7 +171,7 @@
                 var $activeCheckbox = internal.$menu.find("li.selected");
                 internal.$menu.find("li").each(function () {
                     if ($(this).find("ul").length > 0) {
-                        $(this).addClass(internal.settings.hasSubsClass);
+                        $(this).addClass(internal.classes.hasSubsClass);
                     }
                 });
                 if ($activeCheckbox.length === 0) {
@@ -246,7 +249,7 @@
                 internal.methods.checkBackButton();
             },
             goForward: function ($li) {
-                if ($li.hasClass(internal.settings.hasSubsClass)) {
+                if ($li.hasClass(internal.classes.hasSubsClass)) {
                     internal.methods.deselectCheckbox();
                     internal.$menu.find(".active").removeClass("active");
                     $li.children("ul").addClass("active");
