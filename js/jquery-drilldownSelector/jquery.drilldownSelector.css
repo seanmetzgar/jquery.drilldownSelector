@@ -19,7 +19,7 @@
     direction: ltr;
     text-align: left;
     margin:0; padding:50px 0;
-    background: transparent url(img/loader.gif) 50% 50% no-repeat;
+    background: transparent url(img/default/loader.gif) 50% 50% no-repeat;
 }
 /** Nav **/
 .drilldownSelectorContainer.default .drilldownSelectorNav {
@@ -55,14 +55,14 @@
         }
         .drilldownSelectorContainer.default .drilldownSelectorNav .back {
             padding-left: 30px;
-            background-image: url(img/back.png);
+            background-image: url(img/default/back.png);
             background-position: 5px 50%;
             background-repeat: no-repeat;
             float: left;
         }
         .drilldownSelectorContainer.default .drilldownSelectorNav .home {
             padding-left: 30px;
-            background-image: url(img/home.png);
+            background-image: url(img/default/home.png);
             background-position: 5px 50%;
             background-repeat: no-repeat;
             float: right;
@@ -116,7 +116,7 @@
                 top: 0;
                 bottom: 0;
                 z-index: 2;
-                background: transparent url(img/checkbox.png) -30px 50% no-repeat;
+                background: transparent url(img/default/checkbox.png) -30px 50% no-repeat;
             }
                 .drilldownSelectorContainer.default .drilldownSelectorMenu li .checkbox:hover { background-position: -90px 50%; }
                 .drilldownSelectorContainer.default .drilldownSelectorMenu li.selected .checkbox { background-position: 0 50%; }
@@ -124,7 +124,7 @@
             .drilldownSelectorContainer.default .drilldownSelectorMenu li a {
                 display: block;
                 margin: 0; padding: 8px 30px;
-                background: #f2f2f2 url(img/arrow-forward-inactive.png) 5px 50% no-repeat;
+                background: #f2f2f2 url(img/default/arrow-forward-inactive.png) 5px 50% no-repeat;
                 background-repeat: no-repeat;
                 background-position: 5px 50%;
                 border-top: 2px solid #fafafa;
@@ -140,7 +140,7 @@
                     background-color: #fafafa;
                 }
                 .drilldownSelectorContainer.default .drilldownSelectorMenu .hasSubs > a {
-                    background-image: url(img/arrow-forward.png);
+                    background-image: url(img/default/arrow-forward.png);
                 }
 
 
@@ -162,7 +162,7 @@
     direction: ltr;
     text-align: left;
     margin:0; padding:25px 0;
-    background: transparent url(img/loader.gif) 50% 50% no-repeat;
+    background: transparent url(img/thin/loader.gif) 50% 50% no-repeat;
 }
 /** Nav **/
 .drilldownSelectorContainer.thin .drilldownSelectorNav {
@@ -182,13 +182,13 @@
         box-shadow: 0 0 0 1px #d1d1d1;
         background-color: #f2f2f2;
         border-top: 2px solid #fafafa;
-        padding: 8px;
+        padding: 3px;
         margin: 5px;
         width: auto;
         font-family: Helvetica, Arial, sans-serif;
         font-size: 12px;
         line-height: 14px;
-        font-weight: bold;
+        font-weight: normal;
         text-decoration: none;            
         color: #375978;
         overflow: hidden;
@@ -197,15 +197,15 @@
             background-color: #fafafa;
         }
         .drilldownSelectorContainer.thin .drilldownSelectorNav .back {
-            padding-left: 30px;
-            background-image: url(img/back.png);
+            padding-left: 23px;
+            background-image: url(img/thin/back.png);
             background-position: 5px 50%;
             background-repeat: no-repeat;
             float: left;
         }
         .drilldownSelectorContainer.thin .drilldownSelectorNav .home {
-            padding-left: 30px;
-            background-image: url(img/home.png);
+            padding-left: 20px;
+            background-image: url(img/thin/home.png);
             background-position: 5px 50%;
             background-repeat: no-repeat;
             float: right;
@@ -253,28 +253,28 @@
         }
             .drilldownSelectorContainer.thin .drilldownSelectorMenu a .checkbox {
                 display: block;                
-                width: 21px;
+                width: 15px;
                 position: absolute;
                 right: 5px;
                 top: 0;
                 bottom: 0;
                 z-index: 2;
-                background: transparent url(img/checkbox.png) -30px 50% no-repeat;
+                background: transparent url(img/thin/checkbox.png) -20px 50% no-repeat;
             }
-                .drilldownSelectorContainer.thin .drilldownSelectorMenu li .checkbox:hover { background-position: -90px 50%; }
+                .drilldownSelectorContainer.thin .drilldownSelectorMenu li .checkbox:hover { background-position: -60px 50%; }
                 .drilldownSelectorContainer.thin .drilldownSelectorMenu li.selected .checkbox { background-position: 0 50%; }
-                .drilldownSelectorContainer.thin .drilldownSelectorMenu li.selected .checkbox:hover { background-position: -60px 50%; }
+                .drilldownSelectorContainer.thin .drilldownSelectorMenu li.selected .checkbox:hover { background-position: -40px 50%; }
             .drilldownSelectorContainer.thin .drilldownSelectorMenu li a {
                 display: block;
-                margin: 0; padding: 4px 45px 4px 30px;
-                background: #f2f2f2 url(img/arrow-forward-inactive.png) 5px 50% no-repeat;
+                margin: 0; padding: 3px 30px 3px 20px;
+                background: #f2f2f2 url(img/thin/arrow-forward-inactive.png) 5px 50% no-repeat;
                 background-repeat: no-repeat;
-                background-position: 5px 50%;          
+                background-position: 5px 49%;          
                 border-right: 1px solid #d1d1d1;
                 font-family: Helvetica, Arial, sans-serif;
                 font-size: 12px;
-                line-height: 14px;
-                font-weight: bold;
+                line-height: 12px;
+                font-weight: normal;
                 text-decoration: none;            
                 color: #375978;
                 position: relative;
@@ -286,5 +286,5 @@
                     border-top-color: #fafafa;
                 }
                 .drilldownSelectorContainer.thin .drilldownSelectorMenu .hasSubs > a {
-                    background-image: url(img/arrow-forward.png);
+                    background-image: url(img/thin/arrow-forward.png);
                 }
