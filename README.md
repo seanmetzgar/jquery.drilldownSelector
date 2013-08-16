@@ -1,5 +1,6 @@
 jquery.drilldownSelector
 ========================
+v1.1.0
 
 OVERVIEW:
 ---------
