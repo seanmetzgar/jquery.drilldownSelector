@@ -20,6 +20,8 @@ USAGE:
 * jquery.drilldownSelector.min.js or jquery.drilldownSelector.js,
 * jquery.drilldownSelector.min.css or jquery.drilldownSelector.css
 * Ensure themes referenced have been included in themes folder
+* If @import is not allowed (i.e. drupal themes):
+    * Ensure you include ALL appropriate theme CSS files.
 
 ###HTML EXAMPLE:###
 The following structure will be used.
