@@ -19,6 +19,7 @@ USAGE:
 * jquery,
 * jquery.drilldownSelector.min.js or jquery.drilldownSelector.js,
 * jquery.drilldownSelector.min.css or jquery.drilldownSelector.css
+* Ensure themes referenced have been included in themes folder
 
 ###HTML EXAMPLE:###
 The following structure will be used.
